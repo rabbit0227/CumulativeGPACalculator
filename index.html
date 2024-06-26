@@ -3,7 +3,131 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>GPA Calculator</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body></body>
+  <body class="bg-gray-100 p-6">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+      <h1 class="text-2xl font-bold mb-4">GPA Calculator</h1>
+      <table class="table-auto w-full mb-4">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Course (optional)</th>
+            <th class="px-4 py-2">Grade</th>
+            <th class="px-4 py-2">Credits</th>
+          </tr>
+        </thead>
+        <tbody id="courseTable">
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" value="A" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" value="B+" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" value="B+" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">
+              <input type="checkbox" checked class="form-checkbox" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="text" class="form-input w-full" />
+            </td>
+            <td class="border px-4 py-2">
+              <input type="number" class="form-input w-full" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button id="addRow" class="bg-blue-500 text-white px-4 py-2 rounded">
+        + Add row
+      </button>
+      <button
+        id="calculate"
+        class="bg-green-500 text-white px-4 py-2 rounded ml-2"
+      >
+        = Calculate
+      </button>
+      <button id="reset" class="bg-red-500 text-white px-4 py-2 rounded ml-2">
+        × Reset
+      </button>
+      <div class="mt-4">
+        <label for="gpa" class="block text-lg font-bold">GPA:</label>
+        <input id="gpa" type="text" class="form-input w-full" readonly />
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
