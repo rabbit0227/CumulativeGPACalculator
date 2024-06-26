@@ -1,78 +1,108 @@
-document.getElementById("addRow").addEventListener("click", () => {
-  const table = document.getElementById("courseTable");
-  const row = table.insertRow();
-  row.innerHTML = `
-        <td class="border px-4 py-2"><input type="checkbox" checked class="form-checkbox"></td>
-        <td class="border px-4 py-2"><input type="text" class="form-input w-full"></td>
-        <td class="border px-4 py-2"><input type="number" class="form-input w-full"></td>
-    `;
-});
+document.addEventListener("DOMContentLoaded", () => {
+  const courseTable = document.getElementById("courseTable");
+  const addRowButton = document.getElementById("addRow");
+  const calculateButton = document.getElementById("calculate");
+  const resetButton = document.getElementById("reset");
+  const gpaInput = document.getElementById("gpa");
 
-document.getElementById("reset").addEventListener("click", () => {
-  document.getElementById("courseTable").innerHTML = "";
-  document.getElementById("gpa").value = "";
-});
+  const grades = {
+    A: 4.0,
+    "B+": 3.5,
+    B: 3.0,
+    "C+": 2.5,
+    C: 2.0,
+    D: 1.0,
+    F: 0.0,
+  };
 
-document.getElementById("calculate").addEventListener("click", () => {
-  const rows = document.getElementById("courseTable").rows;
-  let totalPoints = 0;
-  let totalCredits = 0;
+  const creditOptions = [
+    { value: 0, label: "0" },
+    { value: 1, label: "1" },
+    { value: 2, label: "2" },
+    { value: 3, label: "3" },
+    { value: 4, label: "4" },
+  ];
 
-  for (let row of rows) {
-    const cells = row.cells;
-    if (cells[0].children[0].checked) {
-      const grade = cells[1].children[0].value.toUpperCase();
-      const credits = parseFloat(cells[2].children[0].value);
-      if (isNaN(credits)) continue;
+  function addRow(course = "", grade = "", credits = "") {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td class="border px-4 py-2"><input type="checkbox" class="form-checkbox" checked></td>
+        <td class="border px-4 py-2"><input type="text" class="form-input w-full" value="${course}"></td>
+        <td class="border px-4 py-2">
+          <select class="form-select w-full grade-input">
+            <option value="A" ${grade === "A" ? "selected" : ""}>A</option>
+            <option value="B+" ${grade === "B+" ? "selected" : ""}>B+</option>
+            <option value="B" ${grade === "B" ? "selected" : ""}>B</option>
+            <option value="C+" ${grade === "C+" ? "selected" : ""}>C+</option>
+            <option value="C" ${grade === "C" ? "selected" : ""}>C</option>
+            <option value="D" ${grade === "D" ? "selected" : ""}>D</option>
+            <option value="F" ${grade === "F" ? "selected" : ""}>F</option>
+          </select>
+        </td>
+        <td class="border px-4 py-2">
+          <select class="form-select w-full credits-input">
+            ${creditOptions.map(
+              (option) =>
+                `<option value="${option.value}" ${
+                  parseFloat(credits) === option.value ? "selected" : ""
+                }>${option.label}</option>`
+            )}
+          </select>
+        </td>
+      `;
+    courseTable.appendChild(row);
+  }
 
-      let points;
-      switch (grade) {
-        case "A":
-          points = 4.0;
-          break;
-        case "A-":
-          points = 3.7;
-          break;
-        case "B+":
-          points = 3.3;
-          break;
-        case "B":
-          points = 3.0;
-          break;
-        case "B-":
-          points = 2.7;
-          break;
-        case "C+":
-          points = 2.3;
-          break;
-        case "C":
-          points = 2.0;
-          break;
-        case "C-":
-          points = 1.7;
-          break;
-        case "D+":
-          points = 1.3;
-          break;
-        case "D":
-          points = 1.0;
-          break;
-        case "D-":
-          points = 0.7;
-          break;
-        case "F":
-          points = 0.0;
-          break;
-        default:
-          points = 0.0;
-          break;
-      }
-
-      totalPoints += points * credits;
-      totalCredits += credits;
+  function resetTable() {
+    courseTable.innerHTML = "";
+    gpaInput.value = "";
+    for (let i = 0; i < 5; i++) {
+      addRow();
     }
   }
 
-  const gpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : 0.0;
-  document.getElementById("gpa").value = gpa;
+  function calculateGPA() {
+    const rows = courseTable.rows;
+    let totalPoints = 0;
+    let totalCredits = 0;
+    let validInput = true;
+
+    for (let row of rows) {
+      const include = row.cells[0].children[0].checked;
+      const grade = row.cells[2].children[0].value;
+      const credits = parseFloat(
+        row.cells[3].querySelector(".credits-input").value
+      );
+
+      if (!include) {
+        continue;
+      }
+
+      if (!grades.hasOwnProperty(grade)) {
+        validInput = false;
+        break;
+      }
+
+      if (isNaN(credits) || ![0, 1, 2, 3, 4].includes(credits)) {
+        validInput = false;
+        break;
+      }
+
+      totalPoints += grades[grade] * credits;
+      totalCredits += credits;
+    }
+
+    if (validInput && totalCredits !== 0) {
+      const gpa = (totalPoints / totalCredits).toFixed(2);
+      gpaInput.value = gpa;
+    } else {
+      gpaInput.value = ""; // Clear GPA if there are invalid inputs or no credits entered
+    }
+  }
+
+  addRowButton.addEventListener("click", () => addRow());
+  resetButton.addEventListener("click", resetTable);
+  calculateButton.addEventListener("click", calculateGPA);
+
+  resetTable();
 });
