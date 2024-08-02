@@ -41,16 +41,24 @@ document.addEventListener("DOMContentLoaded", () => {
         </td>
         <td class="border px-4 py-2">
           <select class="form-select w-full credits-input">
-            ${creditOptions.map(
-              (option) =>
-                `<option value="${option.value}" ${
-                  parseFloat(credits) === option.value ? "selected" : ""
-                }>${option.label}</option>`
-            )}
+            ${creditOptions
+              .map(
+                (option) =>
+                  `<option value="${option.value}" ${
+                    parseFloat(credits) === option.value ? "selected" : ""
+                  }>${option.label}</option>`
+              )
+              .join("")}
           </select>
         </td>
+        <td class="border px-4 py-2"><button class="delete-row bg-red-500 text-white px-2 py-1 rounded">Delete</button></td>
       `;
     courseTable.appendChild(row);
+
+    // Add event listener to the delete button
+    row.querySelector(".delete-row").addEventListener("click", () => {
+      row.remove();
+    });
   }
 
   function resetTable() {
